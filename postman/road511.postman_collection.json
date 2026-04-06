@@ -1,0 +1,256 @@
+{
+  "info": {
+    "name": "Road511 Traffic Data API",
+    "description": "Unified REST API for real-time traffic data across 65 US and Canadian jurisdictions.\n\nSign up: https://portal.road511.com\nDocs: https://road511.com/docs.html",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      { "key": "key", "value": "X-API-Key", "type": "string" },
+      { "key": "value", "value": "{{api_key}}", "type": "string" },
+      { "key": "in", "value": "header", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "base_url", "value": "https://api.road511.com/api/v1" },
+    { "key": "api_key", "value": "sk_live_your_key_here" }
+  ],
+  "item": [
+    {
+      "name": "Events",
+      "item": [
+        {
+          "name": "List events",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/events?jurisdiction=CA&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["events"],
+              "query": [
+                { "key": "jurisdiction", "value": "CA", "description": "US state or CA province code" },
+                { "key": "type", "value": "", "description": "incident, construction, closure, special_event, etc.", "disabled": true },
+                { "key": "severity", "value": "", "description": "critical, major, moderate, minor, info", "disabled": true },
+                { "key": "road", "value": "", "description": "Road name filter (e.g. I-95)", "disabled": true },
+                { "key": "lat", "value": "", "description": "Latitude for radius search", "disabled": true },
+                { "key": "lng", "value": "", "description": "Longitude for radius search", "disabled": true },
+                { "key": "radius_km", "value": "", "description": "Radius in km (requires lat+lng)", "disabled": true },
+                { "key": "bbox", "value": "", "description": "Bounding box: west,south,east,north", "disabled": true },
+                { "key": "limit", "value": "10" },
+                { "key": "offset", "value": "0", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Events GeoJSON",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/events/geojson?jurisdiction=WA&limit=50",
+              "host": ["{{base_url}}"],
+              "path": ["events", "geojson"],
+              "query": [
+                { "key": "jurisdiction", "value": "WA" },
+                { "key": "limit", "value": "50" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Event by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/events/:id",
+              "host": ["{{base_url}}"],
+              "path": ["events", ":id"],
+              "variable": [
+                { "key": "id", "value": "wa-example-123", "description": "Event ID" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Features",
+      "item": [
+        {
+          "name": "List features (cameras)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/features?type=cameras&jurisdiction=CO&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["features"],
+              "query": [
+                { "key": "type", "value": "cameras", "description": "cameras, signs, weather_stations, rest_areas, bridges, weight_restrictions, truck_routes, ev_charging, etc." },
+                { "key": "jurisdiction", "value": "CO" },
+                { "key": "lat", "value": "", "disabled": true },
+                { "key": "lng", "value": "", "disabled": true },
+                { "key": "radius_km", "value": "", "disabled": true },
+                { "key": "bbox", "value": "", "disabled": true },
+                { "key": "limit", "value": "10" },
+                { "key": "offset", "value": "0", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List features (bridges)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/features?type=bridges&lat=41.88&lng=-87.63&radius_km=30&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["features"],
+              "query": [
+                { "key": "type", "value": "bridges" },
+                { "key": "lat", "value": "41.88" },
+                { "key": "lng", "value": "-87.63" },
+                { "key": "radius_km", "value": "30" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Features GeoJSON",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/features/geojson?type=cameras&jurisdiction=WA&limit=50",
+              "host": ["{{base_url}}"],
+              "path": ["features", "geojson"],
+              "query": [
+                { "key": "type", "value": "cameras" },
+                { "key": "jurisdiction", "value": "WA" },
+                { "key": "limit", "value": "50" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Feature types",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/features/types",
+              "host": ["{{base_url}}"],
+              "path": ["features", "types"]
+            }
+          }
+        },
+        {
+          "name": "Feature detail",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/features/:id/details",
+              "host": ["{{base_url}}"],
+              "path": ["features", ":id", "details"],
+              "variable": [
+                { "key": "id", "value": "co-camera-123", "description": "Feature ID" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Truck Corridor",
+      "item": [
+        {
+          "name": "Truck corridor restrictions",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/truck/corridor?road=I-80&from_lat=40.71&from_lng=-74.01&to_lat=41.88&to_lng=-87.63&buffer_km=5&limit=50",
+              "host": ["{{base_url}}"],
+              "path": ["truck", "corridor"],
+              "query": [
+                { "key": "road", "value": "I-80", "description": "Road name" },
+                { "key": "from_lat", "value": "40.71" },
+                { "key": "from_lng", "value": "-74.01" },
+                { "key": "to_lat", "value": "41.88" },
+                { "key": "to_lng", "value": "-87.63" },
+                { "key": "buffer_km", "value": "5", "description": "Corridor buffer width in km" },
+                { "key": "limit", "value": "50" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Truck corridor GeoJSON",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/truck/corridor/geojson?road=I-90&from_lat=41.88&from_lng=-87.63&to_lat=41.50&to_lng=-81.69&buffer_km=5",
+              "host": ["{{base_url}}"],
+              "path": ["truck", "corridor", "geojson"],
+              "query": [
+                { "key": "road", "value": "I-90" },
+                { "key": "from_lat", "value": "41.88" },
+                { "key": "from_lng", "value": "-87.63" },
+                { "key": "to_lat", "value": "41.50" },
+                { "key": "to_lng", "value": "-81.69" },
+                { "key": "buffer_km", "value": "5" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Metadata",
+      "item": [
+        {
+          "name": "Jurisdictions",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/jurisdictions",
+              "host": ["{{base_url}}"],
+              "path": ["jurisdictions"]
+            }
+          }
+        },
+        {
+          "name": "Stats",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/stats",
+              "host": ["{{base_url}}"],
+              "path": ["stats"]
+            }
+          }
+        },
+        {
+          "name": "Stats summary",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/stats/summary",
+              "host": ["{{base_url}}"],
+              "path": ["stats", "summary"]
+            }
+          }
+        },
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
