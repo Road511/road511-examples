@@ -5,7 +5,7 @@ Find bridge clearances, weight restrictions, and truck restrictions along a rout
 Sign up at https://portal.road511.com for a free API key (Pro plan required for truck data)
 
 Usage:
-    export ROAD511_API_KEY="sk_live_..."
+    export ROAD511_API_KEY="YOUR_API_KEY"
     pip install requests
     python python_truck_corridor.py
 """
@@ -54,13 +54,12 @@ for feature_type, items in sorted(by_type.items()):
         props = item.get("properties", {})
         name = item.get("name", "Unknown")
 
-        if feature_type == "bridges":
-            clearance = props.get("min_clearance_m", "?")
-            weight = props.get("weight_limit_tons", "?")
-            print(f"  {name}: clearance={clearance}m, weight={weight}t")
+        if feature_type in ("bridge_clearances", "bridges"):
+            clearance = props.get("clearance_m", "?")
+            print(f"  {name}: clearance={clearance}m")
 
         elif feature_type == "weight_restrictions":
-            limit_val = props.get("weight_limit_tons", "?")
+            limit_val = props.get("max_weight_tonnes", "?")
             print(f"  {name}: limit={limit_val}t")
 
         elif feature_type == "truck_routes":

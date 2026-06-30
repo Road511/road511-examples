@@ -3,7 +3,7 @@ Road511 API — Python events example
 Sign up at https://portal.road511.com for a free API key
 
 Usage:
-    export ROAD511_API_KEY="sk_live_..."
+    export ROAD511_API_KEY="YOUR_API_KEY"
     pip install requests
     python python_events.py
 """
@@ -31,7 +31,8 @@ print("=== Active incidents in WA ===")
 data = get_events(jurisdiction="WA", type="incident", limit=5)
 print(f"Total matching: {data['total']}")
 for event in data["data"]:
-    print(f"  [{event['severity']}] {event['road_name']}: {event['title']}")
+    roads = ", ".join(event.get("affected_roads") or []) or "—"
+    print(f"  [{event['severity']}] {roads}: {event['title']}")
 
 # --- Example 2: Radius search near a location ---
 print("\n=== Events within 30km of Portland, OR ===")
@@ -44,14 +45,15 @@ print("\n=== Construction on I-5 ===")
 data = get_events(road="I-5", type="construction", limit=5)
 for event in data["data"]:
     jur = event["jurisdiction"]
-    print(f"  [{jur}] {event['road_name']}: {event['title']}")
+    roads = ", ".join(event.get("affected_roads") or []) or "—"
+    print(f"  [{jur}] {roads}: {event['title']}")
 
 # --- Example 4: Paginate through all major events ---
-print("\n=== All major/critical events (paginated) ===")
+print("\n=== All major events (paginated) ===")
 offset = 0
 total_fetched = 0
 while True:
-    data = get_events(severity="major,critical", limit=50, offset=offset)
+    data = get_events(severity="major", limit=50, offset=offset)
     events = data["data"]
     if not events:
         break
@@ -61,7 +63,7 @@ while True:
     if total_fetched >= 150:
         break
 
-print(f"  Fetched {total_fetched} of {data['total']} major/critical events")
+print(f"  Fetched {total_fetched} of {data['total']} major events")
 
 # --- Example 5: Single event by ID ---
 if data["data"]:
@@ -72,5 +74,6 @@ if data["data"]:
     event = resp.json()
     print(f"  Type: {event['type']}")
     print(f"  Severity: {event['severity']}")
-    print(f"  Road: {event['road_name']}")
+    roads = ", ".join(event.get("affected_roads") or []) or "—"
+    print(f"  Roads: {roads}")
     print(f"  Description: {event.get('description', 'N/A')[:120]}")

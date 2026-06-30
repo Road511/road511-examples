@@ -5,7 +5,7 @@
 //
 // Usage:
 //
-//	export ROAD511_API_KEY="sk_live_..."
+//	export ROAD511_API_KEY="YOUR_API_KEY"
 //	go run go_geojson.go
 package main
 

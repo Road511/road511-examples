@@ -14,7 +14,7 @@
   },
   "variable": [
     { "key": "base_url", "value": "https://api.road511.com/api/v1" },
-    { "key": "api_key", "value": "sk_live_your_key_here" }
+    { "key": "api_key", "value": "YOUR_API_KEY" }
   ],
   "item": [
     {
@@ -31,7 +31,7 @@
               "query": [
                 { "key": "jurisdiction", "value": "CA", "description": "US state or CA province code" },
                 { "key": "type", "value": "", "description": "incident, construction, closure, special_event, etc.", "disabled": true },
-                { "key": "severity", "value": "", "description": "critical, major, moderate, minor, info", "disabled": true },
+                { "key": "severity", "value": "", "description": "critical, major, moderate, minor", "disabled": true },
                 { "key": "road", "value": "", "description": "Road name filter (e.g. I-95)", "disabled": true },
                 { "key": "lat", "value": "", "description": "Latitude for radius search", "disabled": true },
                 { "key": "lng", "value": "", "description": "Longitude for radius search", "disabled": true },
@@ -86,7 +86,7 @@
               "host": ["{{base_url}}"],
               "path": ["features"],
               "query": [
-                { "key": "type", "value": "cameras", "description": "cameras, signs, weather_stations, rest_areas, bridges, weight_restrictions, truck_routes, ev_charging, etc." },
+                { "key": "type", "value": "cameras", "description": "cameras, signs, weather_stations, rest_areas, weigh_stations, road_conditions, bridge_clearances, truck_restrictions, ev_charging, etc. — see GET /features/types" },
                 { "key": "jurisdiction", "value": "CO" },
                 { "key": "lat", "value": "", "disabled": true },
                 { "key": "lng", "value": "", "disabled": true },
@@ -99,15 +99,15 @@
           }
         },
         {
-          "name": "List features (bridges)",
+          "name": "List features (bridge clearances)",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{base_url}}/features?type=bridges&lat=41.88&lng=-87.63&radius_km=30&limit=10",
+              "raw": "{{base_url}}/features?type=bridge_clearances&lat=41.88&lng=-87.63&radius_km=30&limit=10",
               "host": ["{{base_url}}"],
               "path": ["features"],
               "query": [
-                { "key": "type", "value": "bridges" },
+                { "key": "type", "value": "bridge_clearances" },
                 { "key": "lat", "value": "41.88" },
                 { "key": "lng", "value": "-87.63" },
                 { "key": "radius_km", "value": "30" },

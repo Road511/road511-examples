@@ -7,7 +7,7 @@ Code examples for the [Road511 Traffic Data API](https://road511.com) — real-t
 1. [Sign up for a free API key](https://portal.road511.com/) (14-day trial, no credit card)
 2. Set your key as an environment variable:
    ```bash
-   export ROAD511_API_KEY="sk_live_your_key_here"
+   export ROAD511_API_KEY="YOUR_API_KEY"
    ```
 3. Run any example below
 
@@ -28,11 +28,11 @@ Code examples for the [Road511 Traffic Data API](https://road511.com) — real-t
 
 **Authentication:** Pass your API key via header or query param:
 ```
-X-API-Key: sk_live_your_key_here
+X-API-Key: YOUR_API_KEY
 ```
 or
 ```
-?api_key=sk_live_your_key_here
+?api_key=YOUR_API_KEY
 ```
 
 ### Core Endpoints
@@ -46,7 +46,7 @@ or
 | `GET /features?type=signs` | Dynamic message sign content |
 | `GET /features?type=weather_stations` | RWIS weather station readings |
 | `GET /features?type=rest_areas` | Rest areas, truck parking |
-| `GET /features?type=bridges` | Bridge clearances (621K from NBI) |
+| `GET /features?type=bridge_clearances` | Bridge clearances (621K from NBI) |
 | `GET /features?type=weight_restrictions` | Weight-posted roads and bridges |
 | `GET /features?type=truck_routes` | STAA truck routes (FHWA) |
 | `GET /features?type=ev_charging` | EV charging stations (NREL) |
@@ -62,11 +62,11 @@ or
 |-----------|---------|-------------|
 | `jurisdiction` | `CA` | Filter by US state or Canadian province code |
 | `type` | `incident` | Event type: incident, construction, closure, special_event, etc. |
-| `severity` | `major` | Severity: critical, major, moderate, minor, info |
+| `severity` | `major` | Severity: critical, major, moderate, minor |
 | `bbox` | `-124,32,-114,42` | Bounding box (west,south,east,north) |
 | `lat` + `lng` + `radius_km` | `47.6,-122.3,50` | Radius search |
 | `road` | `I-95` | Filter by road name |
-| `limit` | `100` | Results per page (default 50) |
+| `limit` | `100` | Results per page (default 100, capped by plan) |
 | `offset` | `50` | Pagination offset |
 
 ## Data Coverage

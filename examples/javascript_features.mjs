@@ -5,7 +5,7 @@
  * Sign up at https://portal.road511.com for a free API key
  *
  * Usage:
- *   export ROAD511_API_KEY="sk_live_..."
+ *   export ROAD511_API_KEY="YOUR_API_KEY"
  *   node javascript_features.mjs
  */
 
@@ -44,7 +44,7 @@ const cameras = await fetchFeatures({
 });
 console.log(`Found ${cameras.total} cameras within 50km`);
 for (const cam of cameras.data) {
-  const img = cam.properties?.image_url || "no image";
+  const img = cam.properties?.url || cam.properties?.image_url || "no image";
   console.log(`  ${cam.name} — ${img}`);
 }
 

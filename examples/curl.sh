@@ -2,7 +2,7 @@
 # Road511 API — curl examples
 # Sign up at https://portal.road511.com for a free API key
 #
-# Usage: export ROAD511_API_KEY="sk_live_..." && bash curl.sh
+# Usage: export ROAD511_API_KEY="YOUR_API_KEY" && bash curl.sh
 
 set -euo pipefail
 
@@ -31,7 +31,7 @@ curl -s "${AUTH[@]}" "$BASE/features?type=signs&jurisdiction=TX&limit=3" | pytho
 
 echo ""
 echo "=== Bridge clearances near Chicago ==="
-curl -s "${AUTH[@]}" "$BASE/features?type=bridges&lat=41.88&lng=-87.63&radius_km=30&limit=3" | python3 -m json.tool
+curl -s "${AUTH[@]}" "$BASE/features?type=bridge_clearances&lat=41.88&lng=-87.63&radius_km=30&limit=3" | python3 -m json.tool
 
 echo ""
 echo "=== Weight restrictions in Pennsylvania ==="
