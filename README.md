@@ -24,7 +24,6 @@ Code examples for the [Road511 Traffic Data API](https://road511.com) — real-t
 | [examples/python_analytics.py](examples/python_analytics.py) | Python | Every analytics endpoint (Pro+ plan) |
 | [examples/javascript_groups.mjs](examples/javascript_groups.mjs) | JavaScript | Feature and jurisdiction groups, `active` / `compact` |
 | [examples/javascript_routing.mjs](examples/javascript_routing.mjs) | JavaScript | Truck routing, quota, saved routes |
-| [examples/go_map_public.go](examples/go_map_public.go) | Go | The public `/map/*` tier — runs with no API key |
 | [examples/java/Road511Example.java](examples/java/Road511Example.java) | Java | Events, detail, cursor paging — JDK 11+, no dependencies |
 | [examples/javascript_features.mjs](examples/javascript_features.mjs) | JavaScript | Fetch cameras, signs, weather stations near a location |
 | [examples/go_geojson.go](examples/go_geojson.go) | Go | Stream events as GeoJSON and save to file |

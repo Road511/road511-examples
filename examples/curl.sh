@@ -115,8 +115,3 @@ if [ -n "$CURSOR" ]; then
   curl -s "${AUTH[@]}" "$BASE/features?type=bridge_clearances&jurisdiction=TX&limit=5&cursor=$CURSOR" \
     | python3 -m json.tool | head -12
 fi
-
-echo ""
-echo "=== Public map tier — works with no API key at all ==="
-curl -s "$BASE/map/config" | python3 -m json.tool
-curl -s "$BASE/map/features?type=cameras&jurisdiction=ON&limit=3" | python3 -m json.tool | head -20

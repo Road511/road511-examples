@@ -99,18 +99,6 @@ public class Road511Example {
         System.out.println("  read " + rows + " rows over " + pages + " pages");
     }
 
-    // --- The /map/* tier needs no key at all ---
-    private static void publicMapTier() throws Exception {
-        System.out.println("\n=== Public map tier (no API key) ===");
-        HttpRequest req = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/map/config"))
-                .timeout(Duration.ofSeconds(30))
-                .GET()
-                .build();
-        HttpResponse<String> resp = CLIENT.send(req, HttpResponse.BodyHandlers.ofString());
-        System.out.println("  " + resp.body());
-    }
-
     // ---------- plumbing ----------
 
     private static String get(String path, Map<String, String> params) throws Exception {
