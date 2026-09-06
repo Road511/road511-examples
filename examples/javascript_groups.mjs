@@ -71,10 +71,14 @@ console.log("\n=== active filter ===");
 const activeOnly = await api("/features", { type: "cameras", jurisdiction: "ON", active: "true", limit: 1 });
 console.log(`  active cameras in ON: ${activeOnly.total}`);
 
-// --- compact: drop the type-specific properties you are not going to read ---
-// Useful when you only need positions and names, e.g. to draw markers.
-console.log("\n=== compact vs full ===");
-const full = await api("/features", { type: "cameras", jurisdiction: "ON", limit: 1 });
-const compact = await api("/features", { type: "cameras", jurisdiction: "ON", limit: 1, compact: "true" });
-console.log("  full    properties keys:", Object.keys(full.data[0]?.properties ?? {}).join(", ") || "(none)");
-console.log("  compact properties keys:", Object.keys(compact.data[0]?.properties ?? {}).join(", ") || "(none)");
+// --- has_details: what the list row is NOT telling you ---
+// Rows are lean on purpose. Where the source publishes more than the list
+// carries, the row says so and the detail endpoint fetches it on demand.
+console.log("\n=== has_details ===");
+const sample = await api("/features", { type: "cameras", jurisdiction: "ON", limit: 5 });
+const withDetail = sample.data.filter((r) => r.has_details);
+console.log(`  ${withDetail.length} of ${sample.data.length} rows carry extra detail`);
+if (withDetail.length) {
+  const detail = await api(`/features/${encodeURIComponent(withDetail[0].id)}/details`);
+  console.log(`  ${withDetail[0].id}: cache=${detail.cache}`);
+}

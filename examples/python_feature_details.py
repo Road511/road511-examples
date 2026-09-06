@@ -56,7 +56,9 @@ detail = resp.json()
 print(f"  cache={detail['cache']} detail_available={detail['detail_available']}")
 
 props = (detail.get("data") or {}).get("properties") or {}
-for key in ("url", "video_url"):
+# Verified against production: cameras publish `image_url` (37,805 active rows)
+# and `video_url` (21,604). There is no bare `url` key on this type.
+for key in ("image_url", "video_url"):
     if props.get(key):
         print(f"  {key}: {props[key]}")
 for view in props.get("views") or []:

@@ -48,7 +48,7 @@ func main() {
 
 	// Parse and count features
 	var fc struct {
-		Type     string `json:"type"`
+		Type     string            `json:"type"`
 		Features []json.RawMessage `json:"features"`
 	}
 	if err := json.Unmarshal(geojson, &fc); err == nil {
