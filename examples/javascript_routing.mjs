@@ -56,7 +56,10 @@ const route = await api("/routing/route", {
       commercial: true,
     },
     include: ["summary", "polyline"],
-    enrichment: { min_severity: "moderate", buffer_m: 250 },
+    // min_severity ranks info < warning < critical — NOT the event severities
+    // (critical/major/moderate/minor). An unrecognised value filters nothing.
+    // buffer_m overrides the 100 m spatial-join buffer; valid range 10–1000.
+    enrichment: { min_severity: "warning", buffer_m: 250 },
     units: "imperial",
     customer_route_id: "example-run-1",
   },

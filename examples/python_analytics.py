@@ -67,12 +67,17 @@ for row in head(get("/analytics/trends", jurisdiction="WA")):
     print(f"  {row}")
 
 # --- Jurisdictions ranked against each other ---
+# rank_by takes one of: incident_volume, avg_clearance_minutes, source_uptime,
+# construction_overrun_avg_days. An unrecognised value does not error — it falls
+# through to the default ordering, so a typo ranks by something other than what
+# you asked for, silently.
 print("\n=== Scorecard ===")
 for row in head(get("/analytics/scorecard", country="US", **{"from": FROM.isoformat()},
-                    to=TO.isoformat(), rank_by="events", order="desc", limit=5)):
+                    to=TO.isoformat(), rank_by="incident_volume", order="desc", limit=5)):
     print(f"  {row}")
 
 # --- Probability of an incident in a given hour ---
+# dow follows PostgreSQL's EXTRACT(DOW): 0 = Sunday, so 5 = Friday.
 print("\n=== Forecast: I-5 in WA, Friday 17:00 ===")
 forecast = get("/analytics/forecast", jurisdiction="WA", road="I-5", dow=5, hour=17)
 if forecast:
