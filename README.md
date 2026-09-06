@@ -37,7 +37,13 @@ Postman collection covers the core read endpoints.
 
 ## API Overview
 
-**Base URL:** `https://api.road511.com/api/v1`
+**Base URL:** `https://api.road511.com/api/v1` (North America)
+
+If you hold a **NAPSPAN** (European) key, swap the host for
+`https://api.napspan.com/api/v1`. The two deployments run the same code and
+expose the same endpoints, parameters and response shapes — only the host and
+the covered jurisdictions differ, so every example here works unchanged once
+you change the base URL.
 
 **Authentication:** Pass your API key via header or query param:
 ```
