@@ -68,7 +68,7 @@ echo ""
 echo "=== Data sources: licensing and attribution catalogue ==="
 # Who each feed comes from and what you may do with it. Read this before
 # redistributing anything.
-curl -s "${AUTH[@]}" "$BASE/data-sources" | python3 -m json.tool | head -40
+curl -s "${AUTH[@]}" "$BASE/data-sources" | python3 -m json.tool | sed -n '1,40p'
 
 echo ""
 echo "=== Fuel prices: latest per jurisdiction ==="
@@ -80,12 +80,12 @@ curl -s "${AUTH[@]}" "$BASE/fuel-prices?jurisdiction=CA&fuel_type=diesel&from=20
 
 echo ""
 echo "=== Subscription plans (public — no key needed) ==="
-curl -s "$BASE/plans" | python3 -m json.tool | head -30
+curl -s "$BASE/plans" | python3 -m json.tool | sed -n '1,30p'
 
 echo ""
 echo "=== Service status (public — no key needed) ==="
 # Per-jurisdiction health, open circuits and 7-day uptime.
-curl -s "$BASE/status" | python3 -m json.tool | head -30
+curl -s "$BASE/status" | python3 -m json.tool | sed -n '1,30p'
 
 echo ""
 echo "=== Health check (public) ==="
@@ -93,25 +93,25 @@ curl -s "$BASE/health" | python3 -m json.tool
 
 echo ""
 echo "=== Feature and jurisdiction taxonomies ==="
-curl -s "${AUTH[@]}" "$BASE/features/groups" | python3 -m json.tool | head -20
-curl -s "${AUTH[@]}" "$BASE/jurisdictions/groups" | python3 -m json.tool | head -20
+curl -s "${AUTH[@]}" "$BASE/features/groups" | python3 -m json.tool | sed -n '1,20p'
+curl -s "${AUTH[@]}" "$BASE/jurisdictions/groups" | python3 -m json.tool | sed -n '1,20p'
 
 echo ""
 echo "=== Batched feature detail (POST) ==="
 # Ask for several ids in one round trip. Replace these with ids from a list call.
 curl -s "${AUTH[@]}" -H "Content-Type: application/json" \
   -X POST "$BASE/features/details/batch" \
-  -d '{"ids":["ON-cam-155","ON-cam-1434"]}' | python3 -m json.tool | head -30
+  -d '{"ids":["ON-cam-155","ON-cam-1434"]}' | python3 -m json.tool | sed -n '1,30p'
 
 echo ""
 echo "=== Cursor pagination: page 1, then follow next_cursor ==="
 # offset is capped (and the cap drops to 10,000 on 2026-10-06); a cursor has no
 # ceiling and does not slow down as you go deeper.
 PAGE1=$(curl -s "${AUTH[@]}" "$BASE/features?type=bridge_clearances&jurisdiction=TX&limit=5")
-echo "$PAGE1" | python3 -m json.tool | head -12
+echo "$PAGE1" | python3 -m json.tool | sed -n '1,12p'
 CURSOR=$(echo "$PAGE1" | python3 -c 'import sys,json; print(json.load(sys.stdin).get("next_cursor",""))')
 if [ -n "$CURSOR" ]; then
   echo "--- page 2 ---"
   curl -s "${AUTH[@]}" "$BASE/features?type=bridge_clearances&jurisdiction=TX&limit=5&cursor=$CURSOR" \
-    | python3 -m json.tool | head -12
+    | python3 -m json.tool | sed -n '1,12p'
 fi
