@@ -99,8 +99,13 @@ if (route.route_id) {
   console.log(`  ${pois.count} features along the route`);
   for (const f of (pois.features ?? []).slice(0, 5)) {
     const km = (f.distance_along_route_m / 1000).toFixed(1);
-    console.log(`  ${f.type.padEnd(14)} ${f.name} — ${km} km in, ${f.detour_m} m off route (${f.side})`);
+    // available_spots is present only where the feed publishes live occupancy
+    // (US TPIMS and several EU parking feeds). 0 means known full, not unknown.
+    const spots = f.available_spots != null ? `, ${f.available_spots} spots free` : "";
+    console.log(`  ${f.type.padEnd(16)} ${f.name ?? "(unnamed)"} — ${km} km in${spots}`);
   }
+  // Note: detour_m and side are declared in the response schema but are
+  // reserved for a future version and omitted today — do not build on them yet.
 
   // Refetch the saved route with its warnings re-evaluated against current data.
   const refetched = await api(`/routing/route/saved/${route.route_id}`);

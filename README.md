@@ -116,13 +116,17 @@ Worked example: [examples/python_features_paging.py](examples/python_features_pa
 ## Data Coverage
 
 Coverage grows continuously, so this file deliberately quotes no counts — they
-would be wrong within weeks. Ask the API instead; both endpoints are public and
-need no key:
+would be wrong within weeks. Ask the API instead. These two need no key at all:
 
 ```bash
 curl -s https://api.road511.com/api/v1/jurisdictions | jq 'length'   # jurisdictions covered
 curl -s https://api.road511.com/api/v1/stats                         # live event + feature counts
-curl -s https://api.road511.com/api/v1/features/types                # every feature type available
+```
+
+This one needs a key, and returns every feature type with its live row count:
+
+```bash
+curl -s -H "X-API-Key: $ROAD511_API_KEY" https://api.road511.com/api/v1/features/types
 ```
 
 - **Jurisdictions** — US states, Canadian provinces and territories, plus regional and municipal feeds
