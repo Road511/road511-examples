@@ -9,6 +9,8 @@ Usage:
 """
 
 import os
+from urllib.parse import quote
+
 import requests
 
 BASE_URL = "https://api.road511.com/api/v1"
@@ -69,7 +71,9 @@ print(f"  Fetched {total_fetched} of {data['total']} major events")
 if data["data"]:
     event_id = data["data"][0]["id"]
     print(f"\n=== Event detail: {event_id} ===")
-    resp = requests.get(f"{BASE_URL}/events/{event_id}", headers=headers)
+    # Percent-encode the id: 116,883 event ids (5.2%) contain characters that are
+    # not path-safe, including slashes — e.g. "511SF-511.org/1060526".
+    resp = requests.get(f"{BASE_URL}/events/{quote(event_id, safe='')}", headers=headers)
     resp.raise_for_status()
     event = resp.json()
     print(f"  Type: {event['type']}")

@@ -15,6 +15,7 @@ how a planned end date drifted before the work actually finished.
 
 import os
 from datetime import date, timedelta
+from urllib.parse import quote
 
 import requests
 
@@ -93,12 +94,12 @@ if changes and changes.get("data"):
     event_id = changes["data"][0].get("event_id") or changes["data"][0].get("id")
     if event_id:
         print(f"\n=== Timeline for event {event_id} ===")
-        for row in head(get(f"/analytics/history/{event_id}"), 5):
+        for row in head(get(f"/analytics/history/{quote(event_id, safe='')}"), 5):
             print(f"  {row}")
 
         # Conditions at the nearest weather station when the event was created.
         print(f"\n=== Weather snapshot for event {event_id} ===")
-        snap = get(f"/analytics/event-weather/{event_id}")
+        snap = get(f"/analytics/event-weather/{quote(event_id, safe='')}")
         if snap:
             print(f"  {snap.get('distance_km')} km away: {snap.get('temperature')}, "
                   f"surface {snap.get('road_surface')}, {snap.get('precipitation')}")

@@ -12,6 +12,7 @@ carries — a camera's stream URL, a rest area's amenities — the row says so w
 """
 
 import os
+from urllib.parse import quote
 
 import requests
 
@@ -41,7 +42,11 @@ if not detailed:
 # --- Step 2: one feature, in full ---
 first = detailed[0]
 print(f"\n=== Detail for {first['id']} ===")
-resp = requests.get(f"{BASE_URL}/features/{first['id']}/details", headers=HEADERS)
+# Percent-encode the id: 83,827 feature ids (2.2%) contain characters that are
+# not path-safe, including slashes — e.g. "511SF-seg-511.org/101000". safe=""
+# so the slash is encoded too, rather than splitting the path.
+detail_url = f"{BASE_URL}/features/{quote(first['id'], safe='')}/details"
+resp = requests.get(detail_url, headers=HEADERS)
 resp.raise_for_status()
 detail = resp.json()
 

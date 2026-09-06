@@ -62,7 +62,7 @@ public class Road511Example {
             return;
         }
         // Rows advertise extra data with has_details; fetch it on demand.
-        String detail = get("/features/" + URLEncoder.encode(id, StandardCharsets.UTF_8) + "/details", Map.of());
+        String detail = get("/features/" + encodePathSegment(id) + "/details", Map.of());
         System.out.println("  " + id + " cache=" + extract(detail, "\"cache\":\""));
         String image = extract(detail, "\"image_url\":\"");
         if (image != null) {
@@ -127,6 +127,13 @@ public class Road511Example {
             throw new IllegalStateException("HTTP " + resp.statusCode() + " on " + path + ": " + resp.body());
         }
         return resp.body();
+    }
+
+    // URLEncoder is form encoding, not path encoding: it turns a space into "+",
+    // which inside a path segment means a literal plus. 33,052 feature ids
+    // contain a space and 191 contain a slash, so this matters in practice.
+    private static String encodePathSegment(String s) {
+        return URLEncoder.encode(s, StandardCharsets.UTF_8).replace("+", "%20");
     }
 
     private static Map<String, String> params(String... kv) {
