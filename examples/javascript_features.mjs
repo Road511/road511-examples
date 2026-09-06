@@ -81,13 +81,17 @@ for (const ws of weather.data) {
 if (cameras.data.length > 0) {
   const id = cameras.data[0].id;
   console.log(`\n=== Detail for camera ${id} ===`);
-  const resp = await fetch(`${BASE_URL}/features/${id}/details`, {
+  const resp = await fetch(`${BASE_URL}/features/${encodeURIComponent(id)}/details`, {
     headers: { "X-API-Key": API_KEY },
   });
   if (resp.ok) {
     const detail = await resp.json();
-    console.log(`  Name: ${detail.name}`);
-    console.log(`  Properties:`, JSON.stringify(detail.properties, null, 2).slice(0, 300));
+    // The feature is nested under `data`; the envelope around it carries
+    // detail_available and cache. Reading detail.name directly gives undefined.
+    const feature = detail.data ?? {};
+    console.log(`  Name: ${feature.name}`);
+    console.log(`  cache: ${detail.cache}`);
+    console.log(`  Properties:`, JSON.stringify(feature.properties, null, 2).slice(0, 300));
   }
 }
 
