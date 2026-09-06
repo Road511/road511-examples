@@ -27,11 +27,13 @@ Code examples for the [Road511 Traffic Data API](https://road511.com) — real-t
 | [examples/java/Road511Example.java](examples/java/Road511Example.java) | Java | Events, detail, cursor paging — JDK 11+, no dependencies |
 | [examples/javascript_features.mjs](examples/javascript_features.mjs) | JavaScript | Fetch cameras, signs, weather stations near a location |
 | [examples/go_geojson.go](examples/go_geojson.go) | Go | Stream events as GeoJSON and save to file |
-| [postman/road511.postman_collection.json](postman/road511.postman_collection.json) | Postman | Full collection — import into Postman |
+| [postman/road511.postman_collection.json](postman/road511.postman_collection.json) | Postman | Core read endpoints — import into Postman |
 
-These examples cover every endpoint in the public API. `curl.sh` and the Postman
-collection are the exhaustive surface; the language examples are task-shaped and
-show the endpoints that need explanation rather than one call each.
+Between them these examples cover the keyed API — every endpoint you get with an
+API key. Coverage is collective, not per file: each example is task-shaped and
+shows the endpoints that need explanation rather than one call each, so no single
+file is a complete tour. `curl.sh` is the broadest single starting point, and the
+Postman collection covers the core read endpoints.
 
 ## API Overview
 
@@ -51,19 +53,19 @@ or
 | Endpoint | Description |
 |----------|-------------|
 | `GET /events` | Traffic incidents, closures, construction, weather advisories |
-| `GET /events/geojson` | Same data as GeoJSON FeatureCollection |
+| `GET /events/geojson` | Same data as GeoJSON FeatureCollection (Starter+ plan) |
 | `GET /events/{id}` | Single event by ID |
 | `GET /features?type=cameras` | Traffic cameras with image URLs |
 | `GET /features?type=signs` | Dynamic message sign content |
 | `GET /features?type=weather_stations` | RWIS weather station readings |
-| `GET /features?type=rest_areas` | Rest areas, truck parking |
+| `GET /features?type=rest_areas` | Rest areas. Truck parking is a separate type — `truck_parking` |
 | `GET /features?type=bridge_clearances` | Bridge clearances (from the FHWA National Bridge Inventory) |
 | `GET /features?type=weight_restrictions` | Weight-posted roads and bridges |
 | `GET /features?type=truck_routes` | STAA truck routes (FHWA) |
 | `GET /features?type=ev_charging` | EV charging stations (NREL) |
-| `GET /features/geojson` | Features as GeoJSON |
+| `GET /features/geojson` | Features as GeoJSON (Starter+ plan) |
 | `GET /features/{id}/details` | Full detail for a single feature |
-| `GET /truck/corridor` | All truck restrictions along a route corridor |
+| `GET /truck/corridor` | All truck restrictions along a route corridor (Pro+ plan) |
 | `GET /jurisdictions` | Every supported jurisdiction — call it for the current list |
 | `GET /stats` | Active event and feature counts |
 

@@ -71,8 +71,11 @@ show(features(
 # --- Open-ended work ---
 # A feature with a known start and no end matches ends_after but never
 # ends_before. Asking for both is how you separate the two populations.
-print("\n=== Restrictions with no published end date ===")
-open_ended = features(type="truck_restrictions", ends_after=today.isoformat(), limit=100)
+#
+# future_construction is used here rather than truck_restrictions on purpose:
+# see the sparsity note at the end of this file.
+print("\n=== Construction with no published end date ===")
+open_ended = features(type="future_construction", ends_after=today.isoformat(), limit=100)
 no_end = [r for r in open_ended["data"] if not r.get("end_time")]
 print(f"  {len(no_end)} of {len(open_ended['data'])} returned rows are open-ended")
 for row in no_end[:5]:
@@ -85,3 +88,17 @@ show(features(
     ends_before=(today + timedelta(days=60)).isoformat(),
     limit=5,
 ))
+
+# --- A word on how sparse these dates are ---
+#
+# Sources publish schedules unevenly, and a window filter can only match rows
+# that carry dates at all. Measured on production, active rows:
+#
+#     future_construction     1,218 active     515 with a start   109 with an end
+#     special_events             99 active      18 with a start    18 with an end
+#     truck_restrictions  1,474,364 active     521 with a start    11 with an end
+#
+# So a window query over truck_restrictions returns a few hundred rows out of a
+# million and a half — not because the filter is broken, but because almost no
+# source publishes a schedule for a standing restriction. Use windows to find
+# planned work; use a plain type query when you want the whole population.
